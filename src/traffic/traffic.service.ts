@@ -157,7 +157,7 @@ export class TrafficService {
 
       const realtimeArrivalList = response.data.realtimeArrivalList;
       const data = await Promise.all(
-        realtimeArrivalList.map(async (arrv) => {
+        realtimeArrivalList.map(async (arrv, i) => {
           const seconds = arrv.barvlDt;
           const minutes = Math.floor(seconds / 60);
           const remainSeconds = seconds % 60;
@@ -165,6 +165,10 @@ export class TrafficService {
           return {
             message: `${arrv.trainLineNm} ${minutes}분 ${remainSeconds}초`,
             curStn: arrv.arvlMsg3,
+            curPos:
+              i % 2
+                ? { x: 37.496486063, y: 127.028361548 }
+                : { x: 37.504496014, y: 127.048980637 },
           };
         }),
       );
