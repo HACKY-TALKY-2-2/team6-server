@@ -86,17 +86,21 @@ export class TrafficService {
   async getSubwayArrivalInfo() {
     try {
       const response = await axios.get(
-        `http://swopenAPI.seoul.go.kr/api/subway/${this.subwayKey}/json/realtimeStationArrival/0/5/서울`,
+        `http://swopenAPI.seoul.go.kr/api/subway/${this.subwayKey}/json/realtimeStationArrival/0/5/역삼`,
       );
       console.log(response.data);
       if (response.data.total === 0)
         this.notificationService.sendPlainText('지하철이 끊겼어요 ㅠㅠ');
-
-      const seconds = response.data.barvlDt;
-      const minutes = Math.floor(seconds / 60);
-      const remainSeconds = seconds % 60;
-      this.notificationService.sendPlainText(
-        `${minutes}분 ${remainSeconds}초 남았어요`,
+      const realtimeArrivalList = response.data.realtimeArrivalList;
+      await Promise.all(
+        realtimeArrivalList.map(async (arrv) => {
+          const seconds = arrv.barvlDt;
+          const minutes = Math.floor(seconds / 60);
+          const remainSeconds = seconds % 60;
+          await this.notificationService.sendPlainText(
+            `${arrv.trainLineNm} ${minutes}분 ${remainSeconds}초 남았어요`,
+          );
+        }),
       );
     } catch (err) {
       console.error(err);

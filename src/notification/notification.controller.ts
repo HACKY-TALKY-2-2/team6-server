@@ -54,7 +54,6 @@ export class NotificationController {
 
   @Get('/test')
   async getBus() {
-    //this.trafficService.getBusArrivalInfoByRoute('147');
-    this.trafficService.getSubwayArrivalInfo();
+    this.trafficService.getBusArrivalInfoByRoute('147');
   }
 }
