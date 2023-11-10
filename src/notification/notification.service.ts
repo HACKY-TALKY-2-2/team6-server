@@ -49,7 +49,7 @@ export class NotificationService {
         {
           title: route,
           colorVariant: this.colorVariant[index % this.colorVariant.length],
-          url: 'https://team6-frontend.vercel.app',
+          url: 'http://54.180.85.164:4080/bus',
         },
       ];
     });
@@ -67,7 +67,7 @@ export class NotificationService {
     const button = {
       title: '지도에서 확인하기',
       colorVariant: 1,
-      url: 'https://team6-frontend.vercel.app',
+      url: 'http://54.180.85.164:4080',
     };
     await this.client.post(
       `/groups/@${this.groupName}/messages?botName=${this.botName}`,
