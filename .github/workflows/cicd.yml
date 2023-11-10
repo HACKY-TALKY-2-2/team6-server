@@ -42,6 +42,8 @@ jobs:
           echo "CHANNEL_API_KEY=${{ secrets.CHANNEL_API_KEY }}" >> .env
           echo "CHANNEL_API_SECRET=${{ secrets.CHANNEL_API_SECRET }}" >> .env
           echo "CHANNEL_WEBHOOK_TOKEN=${{ secrets.CHANNEL_WEBHOOK_TOKEN }}" >> .env
+          echo "BUS_KEY=${{ secrets.BUS_KEY }}" >> .env
+          echo "SUBWAY_KEY=${{ secrets.SUBWAY_KEY }}" >> .env
           cat .env
       - name: Run Docker
         run: |

@@ -35,7 +35,7 @@ export class NotificationController {
         this.trafficService.getBusArrivalInfo(args);
         break;
       case '지하철':
-        this.notificationService.sendPlainText('지하철 개발 중..');
+        this.trafficService.getSubwayArrivalInfo();
         break;
       case 'help':
       case '명령어':
@@ -49,5 +49,12 @@ export class NotificationController {
   @Get('/bus/routes/:routeNo')
   async sendBusDirectionInfo(@Param('routeNo') routeNo: number) {
     this.notificationService.sendPlainText(routeNo.toString());
+    // TODO: 도착 5분 전 알림 !!!!!!!!!!
+  }
+
+  @Get('/test')
+  async getBus() {
+    //this.trafficService.getBusArrivalInfoByRoute('147');
+    this.trafficService.getSubwayArrivalInfo();
   }
 }
