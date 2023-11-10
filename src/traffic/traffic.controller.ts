@@ -9,4 +9,9 @@ export class TrafficController {
   async getBusArrivalInfo(@Param('route') route: string) {
     return this.trafficService.getBusArrivalInfo147();
   }
+
+  @Get('/subway')
+  async getSubwayInfo() {
+    return this.trafficService.getSubwayArrivalInfo();
+  }
 }

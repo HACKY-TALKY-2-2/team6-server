@@ -166,6 +166,10 @@ export class TrafficService {
           await this.notificationService.sendPlainText(
             `${arrv.trainLineNm} ${minutes}분 ${remainSeconds}초 남았어요`,
           );
+          return {
+            message: `${arrv.trainLineNm} ${minutes}분 ${remainSeconds}초`,
+            curStn: arrv.arrvMsg3,
+          };
         }),
       );
     } catch (err) {
