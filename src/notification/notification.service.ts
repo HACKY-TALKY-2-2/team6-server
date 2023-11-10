@@ -46,7 +46,7 @@ export class NotificationService {
   async sendAlarmtoSubsriber(name: string) {
     await this.client.post(
       `/groups/@${this.groupName}/messages?botName=${this.botName}`,
-      { plainText: `${name}님, 버스가 곧 도착합니다.` },
+      { plainText: `${name}님, 147 버스가 곧 도착합니다.` },
     );
   }
 

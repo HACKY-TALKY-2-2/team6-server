@@ -28,7 +28,7 @@ export class NotificationController {
     }
 
     const message = req.body.entity.plainText;
-    const username = req.body.refers.manager.username;
+    const username = req.body.refers.manager.name;
     // validate message 노선
     const { command, args } = this.notificationService.parseMessage(message);
     switch (command) {
