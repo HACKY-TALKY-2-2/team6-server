@@ -71,7 +71,7 @@ export class NotificationService {
     };
     await this.client.post(
       `/groups/@${this.groupName}/messages?botName=${this.botName}`,
-      { buttons: button },
+      { buttons: [button] },
     );
   }
 
