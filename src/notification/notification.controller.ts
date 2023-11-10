@@ -32,6 +32,8 @@ export class NotificationController {
     }
 
     const message = req.body.entity.plainText;
-    this.notificationService.sendPlainText(message);
+    // validate message 노선
+
+    await this.notificationService.sendPlainText(message.slice(1));
   }
 }
