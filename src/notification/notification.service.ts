@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
+import { Request } from 'express';
 
 @Injectable()
 export class NotificationService {
@@ -17,6 +18,15 @@ export class NotificationService {
     await this.client.post(
       `/groups/@${this.groupName}/messages?botName=${this.botName}`,
       { plainText: message },
+    );
+  }
+
+  validateWebhookEvent(req: Request) {
+    return (
+      req.body.event === 'push' &&
+      req.body.type === 'message' &&
+      req.body.entity.chatType === 'group' &&
+      req.body.entity.plainText.startsWith('!')
     );
   }
 }
