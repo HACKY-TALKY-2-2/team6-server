@@ -32,14 +32,15 @@ export class NotificationController {
     const { command, args } = this.notificationService.parseMessage(message);
     switch (command) {
       case '버스':
-        this.notificationService.sendPlainText('버스 개발 중..');
         this.trafficService.getBusArrivalInfo(args);
+        break;
       case '지하철':
         this.notificationService.sendPlainText('지하철 개발 중..');
         break;
       case 'help':
       case '명령어':
         this.notificationService.sendHelpMessage();
+        break;
       default:
         this.notificationService.sendPlainText('지원되지 않는 명령어입니다.');
     }

@@ -45,17 +45,24 @@ export class NotificationService {
 
   async sendBusRoutesInfo(routes: string[]) {
     const buttons = routes.map((route, index) => {
-      return {
-        title: route,
-        colorVariant: this.colorVariant[index % this.colorVariant.length],
-        url: 'http://54.180.85.164:4000/notification/bus/routes/' + route,
-      };
+      return [
+        {
+          title: route,
+          colorVariant: this.colorVariant[index % this.colorVariant.length],
+          url: 'http://54.180.85.164:4000/notification/bus/routes/' + route,
+        },
+        {
+          title: route,
+          colorVariant: this.colorVariant[this.colorVariant.length - index],
+          url: 'http://54.180.85.164:4000/notification/bus/routes/' + route,
+        },
+      ];
     });
     await Promise.all(
       buttons.map(async (button) => {
         await this.client.post(
           `/groups/@${this.groupName}/messages?botName=${this.botName}`,
-          { buttons: [button] },
+          { buttons: button },
         );
       }),
     );
