@@ -29,4 +29,10 @@ export class NotificationService {
       req.body.entity.plainText.startsWith('!')
     );
   }
+
+  parseMessage(message: string) {
+    const [command, ...args] = message.split(' ');
+    return { command, args };
+    
+  }
 }

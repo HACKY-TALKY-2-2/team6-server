@@ -33,7 +33,16 @@ export class NotificationController {
 
     const message = req.body.entity.plainText;
     // validate message 노선
-
-    await this.notificationService.sendPlainText(message.slice(1));
+    const { command, args } = this.notificationService.parseMessage(message);
+    switch (command) {
+      case '버스':
+        this.notificationService.sendPlainText('버스 개발 중..');
+        break;
+      case '지하철':
+        this.notificationService.sendPlainText('지하철 개발 중..');
+        break;
+      default:
+        this.notificationService.sendPlainText('지원되지 않는 명령어입니다.');
+    }
   }
 }
