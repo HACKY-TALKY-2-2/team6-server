@@ -32,7 +32,7 @@ export class NotificationService {
 
   parseMessage(message: string) {
     const [command, ...args] = message.split(' ');
-    return { command, args };
-    
+    const commandWithOutMark = command.slice(1);
+    return { command: commandWithOutMark, args };
   }
 }
