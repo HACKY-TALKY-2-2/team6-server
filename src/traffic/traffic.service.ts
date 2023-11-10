@@ -3,6 +3,7 @@ import axios from 'axios';
 import { NotificationService } from 'src/notification/notification.service';
 import { XMLParser } from 'fast-xml-parser';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { randomInt } from 'crypto';
 @Injectable()
 export class TrafficService {
   constructor(private notificationService: NotificationService) {
@@ -34,6 +35,7 @@ export class TrafficService {
     { x: 37.505, y: 127.05 },
     { x: 37.50765, y: 127.06 },
   ];
+  congestion = [3, 6];
 
   async getBusArrivalInfo(args: string[]) {
     const validatedBusRoute = this.validateBusRouteNo(args);
@@ -60,16 +62,15 @@ export class TrafficService {
 
   @Cron(CronExpression.EVERY_SECOND, { timeZone: 'Asia/Seoul' })
   tik() {
+    if (this.arriveSecondsOf147[0] % 50 == 0) {
+      this.congestion = [randomInt(3, 6), randomInt(3, 6)];
+    }
     this.arriveSecondsOf147 = this.arriveSecondsOf147.map((sec) => sec - 1);
     if (this.arriveSecondsOf147[0] <= 0) {
       this.arriveSecondsOf147[0] = this.arriveSecondsOf147[1];
       this.arriveSecondsOf147[1] = 500;
     }
   }
-
-  @Cron(CronExpression.EVERY_30_SECONDS)
-  async SyncBusArrivalInfo() {}
-
   getBusArrivalInfo147() {
     return this.arriveSecondsOf147.map((sec, i) => {
       const ratio = sec / 500; // Assuming 660 seconds is the total travel time
@@ -84,6 +85,7 @@ export class TrafficService {
           x: xPos,
           y: yPos,
         },
+        congestion: this.congestion[i],
       };
     });
   }
