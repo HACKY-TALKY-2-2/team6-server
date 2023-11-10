@@ -15,9 +15,9 @@ export class NotificationService {
   groupName = 'hacky-talky';
   helpMessage = `
   명령어 목록:
-    !버스 [버스번호](optional) [[]행](optional)
+    !버스
       - 해당 버스 도착 정보를 확인합니다.
-    !지하철 [[]행](optional)
+    !지하철
       - 해당 지하철 도착 정보를 확인합니다.
     !help | !명령어 
       - 역삼이 bot 명령어 목록을 확인합니다.
