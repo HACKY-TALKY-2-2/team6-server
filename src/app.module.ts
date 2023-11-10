@@ -3,15 +3,17 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { NotificationModule } from './notification/notification.module';
-import { TrafficService } from './traffic/traffic.service';
+
+import { ScheduleModule } from '@nestjs/schedule';
 import { TrafficModule } from './traffic/traffic.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
-    NotificationModule,
+    ScheduleModule.forRoot(),
     TrafficModule,
+    NotificationModule,
   ],
   controllers: [AppController],
-  providers: [AppService, TrafficService],
+  providers: [AppService],
 })
 export class AppModule {}

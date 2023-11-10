@@ -47,14 +47,9 @@ export class NotificationService {
     const buttons = routes.map((route, index) => {
       return [
         {
-          title: route + ' 상행',
+          title: route,
           colorVariant: this.colorVariant[index % this.colorVariant.length],
-          url: 'http://54.180.85.164:4000/notification/bus/routes/' + route,
-        },
-        {
-          title: route + ' 하행',
-          colorVariant: this.colorVariant[this.colorVariant.length - index],
-          url: 'http://54.180.85.164:4000/notification/bus/routes/' + route,
+          url: 'http://54.180.85.164:4000/traffic/bus/' + route,
         },
       ];
     });
