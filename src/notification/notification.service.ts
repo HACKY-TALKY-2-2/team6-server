@@ -67,7 +67,7 @@ export class NotificationService {
     const button = {
       title: '지도에서 확인하기',
       colorVariant: 1,
-      url: 'http://54.180.85.164:4080',
+      url: 'http://54.180.85.164:4080/subway',
     };
     await this.client.post(
       `/groups/@${this.groupName}/messages?botName=${this.botName}`,
