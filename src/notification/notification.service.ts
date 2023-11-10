@@ -13,6 +13,24 @@ export class NotificationService {
   });
   botName = '역삼이';
   groupName = 'hacky-talky';
+  helpMessage = `
+  명령어 목록:
+    !버스 [버스번호](optional) [[]행](optional)
+      - 해당 버스 도착 정보를 확인합니다.
+    !지하철 [[]행](optional)
+      - 해당 지하철 도착 정보를 확인합니다.
+    !help | !명령어 
+      - 역삼이 bot 명령어 목록을 확인합니다.
+  `;
+  colorVariant = [
+    'cobalt',
+    'green',
+    'orange',
+    'red',
+    'black',
+    'pink',
+    'purple',
+  ];
 
   async sendPlainText(message: string) {
     await this.client.post(
@@ -20,6 +38,32 @@ export class NotificationService {
       { plainText: message },
     );
   }
+
+  async sendHelpMessage() {
+    await this.sendPlainText(this.helpMessage);
+  }
+
+  async sendBusRoutesInfo(routes: string[]) {
+    const buttons = routes.map((route, index) => {
+      return {
+        title: route,
+        colorVariant: this.colorVariant[index % this.colorVariant.length],
+        url: 'http://54.180.85.164:4000/notification/bus/routes/' + route,
+      };
+    });
+    await Promise.all(
+      buttons.map(async (button) => {
+        await this.client.post(
+          `/groups/@${this.groupName}/messages?botName=${this.botName}`,
+          { buttons: [button] },
+        );
+      }),
+    );
+  }
+
+  async sendBusDirectionInfo(route: string) {}
+
+  async sendBusArrivalInfo(route: string, direction: string) {}
 
   validateWebhookEvent(req: Request) {
     return (

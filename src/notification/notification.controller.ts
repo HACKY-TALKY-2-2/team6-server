@@ -1,5 +1,7 @@
 import {
   Controller,
+  Get,
+  Param,
   Post,
   Query,
   Req,
@@ -7,20 +9,14 @@ import {
 } from '@nestjs/common';
 import { NotificationService } from './notification.service';
 import { Request } from 'express';
+import { TrafficService } from 'src/traffic/traffic.service';
 
 @Controller('notification')
 export class NotificationController {
-  constructor(private notificationService: NotificationService) {}
-
-  @Post('/plain-text')
-  async sendPlainText(@Query('message') message: string) {
-    try {
-      await this.notificationService.sendPlainText(message);
-    } catch (err) {
-      console.error(err);
-      return err;
-    }
-  }
+  constructor(
+    private notificationService: NotificationService,
+    private trafficService: TrafficService,
+  ) {}
 
   @Post('/webhook/listen')
   async listenWebhook(@Req() req: Request, @Query('token') token: string) {
@@ -37,12 +33,20 @@ export class NotificationController {
     switch (command) {
       case '버스':
         this.notificationService.sendPlainText('버스 개발 중..');
-        break;
+        this.trafficService.getBusArrivalInfo(args);
       case '지하철':
         this.notificationService.sendPlainText('지하철 개발 중..');
         break;
+      case 'help':
+      case '명령어':
+        this.notificationService.sendHelpMessage();
       default:
         this.notificationService.sendPlainText('지원되지 않는 명령어입니다.');
     }
+  }
+
+  @Get('/bus/routes/:routeNo')
+  async sendBusDirectionInfo(@Param('routeNo') routeNo: number) {
+    this.notificationService.sendPlainText(routeNo.toString());
   }
 }
