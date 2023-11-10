@@ -28,11 +28,12 @@ export class NotificationController {
     }
 
     const message = req.body.entity.plainText;
+    const username = req.body.refers.manager.username;
     // validate message 노선
     const { command, args } = this.notificationService.parseMessage(message);
     switch (command) {
       case '버스':
-        this.trafficService.getBusArrivalInfo(args);
+        this.trafficService.getBusArrivalInfo(args, username);
         break;
       case '지하철':
         this.trafficService.getSubwayArrivalInfo();
@@ -52,6 +53,10 @@ export class NotificationController {
     // TODO: 도착 5분 전 알림 !!!!!!!!!!
   }
 
+  @Get('/bus/:userId')
+  async sendAlaram(@Param('userId') userId: string) {
+    this.trafficService.subscribe(userId);
+  }
   @Get('/test')
   async getBus() {
     this.trafficService.getBusArrivalInfoByRoute('147');

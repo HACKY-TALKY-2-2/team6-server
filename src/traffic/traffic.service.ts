@@ -37,10 +37,12 @@ export class TrafficService {
   ];
   congestion = [3, 6];
 
-  async getBusArrivalInfo(args: string[]) {
+  subscribers = [];
+
+  async getBusArrivalInfo(args: string[], username: string) {
     const validatedBusRoute = this.validateBusRouteNo(args);
     if (validatedBusRoute === undefined) {
-      this.notificationService.sendBusRoutesInfo(this.avaliableBuses);
+      this.notificationService.sendBusRoutesInfo(this.avaliableBuses, username);
       return;
     }
     if (args.length < 2) {
@@ -66,6 +68,14 @@ export class TrafficService {
       this.congestion = [randomInt(3, 6), randomInt(3, 6)];
     }
     this.arriveSecondsOf147 = this.arriveSecondsOf147.map((sec) => sec - 1);
+
+    if (this.arriveSecondsOf147[0] <= 180) {
+      this.subscribers.forEach((userId) => {
+        this.notificationService.sendAlarmtoSubsriber(userId);
+      });
+      this.subscribers = [];
+    }
+
     if (this.arriveSecondsOf147[0] <= 0) {
       this.arriveSecondsOf147[0] = this.arriveSecondsOf147[1];
       this.arriveSecondsOf147[1] = 720;
@@ -147,6 +157,10 @@ export class TrafficService {
     } catch (err) {
       console.error(err);
     }
+  }
+
+  subscribe(userId: string) {
+    this.subscribers.push(userId);
   }
 
   async getSubwayInfoWithOutmessage() {

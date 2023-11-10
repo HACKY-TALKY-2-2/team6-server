@@ -43,13 +43,25 @@ export class NotificationService {
     await this.sendPlainText(this.helpMessage);
   }
 
-  async sendBusRoutesInfo(routes: string[]) {
+  async sendAlarmtoSubsriber(name: string) {
+    await this.client.post(
+      `/groups/@${this.groupName}/messages?botName=${this.botName}`,
+      { plainText: `${name}님, 버스가 곧 도착합니다.` },
+    );
+  }
+
+  async sendBusRoutesInfo(routes: string[], username: string) {
     const buttons = routes.map((route, index) => {
       return [
         {
           title: route,
           colorVariant: this.colorVariant[index % this.colorVariant.length],
           url: 'http://54.180.85.164:4080/bus',
+        },
+        {
+          title: '알림받기',
+          colorVariant: 1,
+          url: 'http://54.180.85.164:4000/notification/bus/' + username,
         },
       ];
     });
@@ -64,14 +76,16 @@ export class NotificationService {
   }
 
   async sendSubwayInfo() {
-    const button = {
-      title: '지도에서 확인하기',
-      colorVariant: 1,
-      url: 'http://54.180.85.164:4080/subway',
-    };
+    const button = [
+      {
+        title: '지도에서 확인하기',
+        colorVariant: 1,
+        url: 'http://54.180.85.164:4080/subway',
+      },
+    ];
     await this.client.post(
       `/groups/@${this.groupName}/messages?botName=${this.botName}`,
-      { buttons: [button] },
+      { buttons: button },
     );
   }
 
