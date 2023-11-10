@@ -12,6 +12,6 @@ export class TrafficController {
 
   @Get('/subway')
   async getSubwayInfo() {
-    return this.trafficService.getSubwayInfoWithOutmessage();
+    return await this.trafficService.getSubwayInfoWithOutmessage();
   }
 }

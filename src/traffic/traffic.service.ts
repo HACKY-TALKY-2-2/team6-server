@@ -150,32 +150,26 @@ export class TrafficService {
   }
 
   async getSubwayInfoWithOutmessage() {
-    try {
-      const response = await axios.get(
-        `http://swopenAPI.seoul.go.kr/api/subway/${this.subwayKey}/json/realtimeStationArrival/0/5/역삼`,
-      );
+    const response = await axios.get(
+      `http://swopenAPI.seoul.go.kr/api/subway/${this.subwayKey}/json/realtimeStationArrival/0/5/역삼`,
+    );
 
-      const realtimeArrivalList = response.data.realtimeArrivalList;
-      const data = await Promise.all(
-        realtimeArrivalList.map(async (arrv, i) => {
-          const seconds = arrv.barvlDt;
-          const minutes = Math.floor(seconds / 60);
-          const remainSeconds = seconds % 60;
+    const realtimeArrivalList = response.data.realtimeArrivalList;
+    console.log(response.data);
+    return realtimeArrivalList.map((arrv, i) => {
+      const seconds = arrv.barvlDt;
+      const minutes = Math.floor(seconds / 60);
+      const remainSeconds = seconds % 60;
 
-          return {
-            message: `${arrv.trainLineNm} ${minutes}분 ${remainSeconds}초`,
-            curStn: arrv.arvlMsg3,
-            curPos:
-              i % 2
-                ? { x: 37.496486063, y: 127.028361548 }
-                : { x: 37.504496014, y: 127.048980637 },
-          };
-        }),
-      );
-      return data;
-    } catch (err) {
-      console.error(err);
-    }
+      return {
+        message: `${arrv.trainLineNm} ${minutes}분 ${remainSeconds}초`,
+        curStn: arrv.arvlMsg3,
+        curPos:
+          i % 2
+            ? { x: 37.496486063, y: 127.028361548 }
+            : { x: 37.504496014, y: 127.048980637 },
+      };
+    });
   }
 
   async getSubwayArrivalInfo() {
