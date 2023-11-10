@@ -68,7 +68,7 @@ export class TrafficService {
     this.arriveSecondsOf147 = this.arriveSecondsOf147.map((sec) => sec - 1);
     if (this.arriveSecondsOf147[0] <= 0) {
       this.arriveSecondsOf147[0] = this.arriveSecondsOf147[1];
-      this.arriveSecondsOf147[1] = 360;
+      this.arriveSecondsOf147[1] = 720;
     }
   }
   getBusArrivalInfo147() {
