@@ -49,7 +49,7 @@ export class NotificationService {
         {
           title: route,
           colorVariant: this.colorVariant[index % this.colorVariant.length],
-          url: 'http://54.180.85.164:4000/traffic/bus/' + route,
+          url: 'https://team6-frontend.vercel.app',
         },
       ];
     });
