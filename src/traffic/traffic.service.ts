@@ -149,6 +149,32 @@ export class TrafficService {
     }
   }
 
+  async getSubwayInfoWithOutmessage() {
+    try {
+      const response = await axios.get(
+        `http://swopenAPI.seoul.go.kr/api/subway/${this.subwayKey}/json/realtimeStationArrival/0/5/역삼`,
+      );
+
+      if (response.data.total === 0)
+        this.notificationService.sendPlainText('지하철이 끊겼어요 ㅠㅠ');
+      const realtimeArrivalList = response.data.realtimeArrivalList;
+      await Promise.all(
+        realtimeArrivalList.map(async (arrv) => {
+          const seconds = arrv.barvlDt;
+          const minutes = Math.floor(seconds / 60);
+          const remainSeconds = seconds % 60;
+
+          return {
+            message: `${arrv.trainLineNm} ${minutes}분 ${remainSeconds}초`,
+            curStn: arrv.arrvMsg3,
+          };
+        }),
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   async getSubwayArrivalInfo() {
     try {
       const response = await axios.get(
