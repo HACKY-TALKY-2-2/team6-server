@@ -158,7 +158,7 @@ export class TrafficService {
       if (response.data.total === 0)
         this.notificationService.sendPlainText('지하철이 끊겼어요 ㅠㅠ');
       const realtimeArrivalList = response.data.realtimeArrivalList;
-      await Promise.all(
+      const data = await Promise.all(
         realtimeArrivalList.map(async (arrv) => {
           const seconds = arrv.barvlDt;
           const minutes = Math.floor(seconds / 60);
@@ -170,6 +170,7 @@ export class TrafficService {
           };
         }),
       );
+      return data;
     } catch (err) {
       console.error(err);
     }
