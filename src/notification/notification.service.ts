@@ -63,6 +63,18 @@ export class NotificationService {
     );
   }
 
+  async sendSubwayInfo() {
+    const button = {
+      title: '지도에서 확인하기',
+      colorVariant: 1,
+      url: 'https://team6-frontend.vercel.app',
+    };
+    await this.client.post(
+      `/groups/@${this.groupName}/messages?botName=${this.botName}`,
+      { buttons: button },
+    );
+  }
+
   async sendBusDirectionInfo(route: string) {}
 
   async sendBusArrivalInfo(route: string, direction: string) {}

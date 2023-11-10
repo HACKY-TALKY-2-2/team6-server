@@ -155,8 +155,6 @@ export class TrafficService {
         `http://swopenAPI.seoul.go.kr/api/subway/${this.subwayKey}/json/realtimeStationArrival/0/5/역삼`,
       );
 
-      if (response.data.total === 0)
-        this.notificationService.sendPlainText('지하철이 끊겼어요 ㅠㅠ');
       const realtimeArrivalList = response.data.realtimeArrivalList;
       const data = await Promise.all(
         realtimeArrivalList.map(async (arrv) => {
@@ -193,12 +191,9 @@ export class TrafficService {
           await this.notificationService.sendPlainText(
             `${arrv.trainLineNm} ${minutes}분 ${remainSeconds}초 남았어요`,
           );
-          return {
-            message: `${arrv.trainLineNm} ${minutes}분 ${remainSeconds}초`,
-            curStn: arrv.arrvMsg3,
-          };
         }),
       );
+      await this.notificationService.sendSubwayInfo();
     } catch (err) {
       console.error(err);
     }
