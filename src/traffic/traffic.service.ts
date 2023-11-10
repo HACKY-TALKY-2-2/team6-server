@@ -28,7 +28,7 @@ export class TrafficService {
   serviceKey = process.env.BUS_KEY;
   subwayKey = process.env.SUBWAY_KEY;
 
-  arriveSecondsOf147 = [660, 1320];
+  arriveSecondsOf147 = [500, 1000];
   posArrive = { x: 37.501, y: 127.0371 };
   posOf147Start = [
     { x: 37.505, y: 127.05 },
@@ -63,7 +63,7 @@ export class TrafficService {
     this.arriveSecondsOf147 = this.arriveSecondsOf147.map((sec) => sec - 1);
     if (this.arriveSecondsOf147[0] <= 0) {
       this.arriveSecondsOf147[0] = this.arriveSecondsOf147[1];
-      this.arriveSecondsOf147[1] = 660;
+      this.arriveSecondsOf147[1] = 500;
     }
   }
 
@@ -72,7 +72,7 @@ export class TrafficService {
 
   getBusArrivalInfo147() {
     return this.arriveSecondsOf147.map((sec, i) => {
-      const ratio = sec / 660; // Assuming 660 seconds is the total travel time
+      const ratio = sec / 500; // Assuming 660 seconds is the total travel time
       const xPos =
         this.posArrive.x + (this.posOf147Start[i].x - this.posArrive.x) * ratio;
       const yPos =
